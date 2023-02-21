@@ -1,0 +1,182 @@
+/*EJERCICIO
+Realice un programa que permita registrar el tiempo de carrera de los corredores de un maratón.
+
+1. Se debe guardar el nombre del corredor y el tiempo en minutos (puede tener decimales)
+
+2. El primer corredor es el que menos se demoro, el segundo el siguiente y así sucesivamente.
+
+3. Mostrar el promedio de tiempo utilizado por los corredores y la mediana.
+
+--------------------------------
+integrantes del grupo:
+jonathan javier lozano patiño
+Diego Alberto Escobar
+
+*/
+
+
+
+#include <iostream>
+#include <stdlib.h>
+
+using namespace std;
+
+//se crea el nodo
+struct nodo{
+     double tiempo;
+	char nombre[30];        
+     struct nodo *sgte;
+};
+
+//se crea la variable que guardara la info de los nodos
+typedef struct nodo *Tlista;
+
+Tlista inicio, fin;
+
+void registrarCorredor( Tlista &cab, Tlista &fin) 
+{
+	int contador = 1;
+	
+     Tlista q, t;
+     
+     for(int i=0; i<contador; i++)
+     {
+          //crea un nuevo nodo
+         q = new(struct nodo);
+         cout<<"Ingrese el nombre del corredor: \n";
+         cin>>q->nombre;
+         cout<<"Ingrese el tiempo del corredor en segundos: \n";
+         cin>>q->tiempo;
+
+         
+         //si el primer puntero esta vacio
+         //se le da el dato como la cabeza
+         if(cab==NULL)
+         {
+              q->sgte = cab;
+              cab  = q;
+              fin     = q;          
+         }
+         else
+         {
+              q->sgte   = fin->sgte;
+              fin->sgte = q;
+              fin       = q;
+         }
+     }
+     
+     cout<<"\n\n\tcorredor registrado con exito......"<<endl;
+}
+
+//le pasa el puntero inicial 
+void mostrarLista(Tlista inicio)
+{
+     //mientras que sea diferente a nulo se mostrara la info de los corredores
+     while(inicio != NULL)
+     {
+          cout <<inicio->nombre<<"  " << inicio->tiempo <<" Sg\n";
+          inicio = inicio->sgte;
+     }
+
+}
+
+void ordenarLista(Tlista lista)
+{
+     Tlista actual , siguiente;
+     double t;
+     
+     //actual coge el valor de la lista
+     actual = lista;
+
+     //verifica que el nodo siguiente al actual
+     //no este vacio
+     while(actual->sgte != NULL)
+     {
+          //lo guarda en la var siguiente
+          siguiente = actual->sgte;
+          
+          //mientras que sea diferente a null
+          while(siguiente!=NULL)
+          {
+               //hace la comparacion si el tiempo es mayor  al siguiente nodo
+               if(actual->tiempo > siguiente->tiempo)
+               {
+                    //si es mayor guarda la info en la variable t que es tiempo temporal
+                    t = siguiente->tiempo;
+                    //los cambia de posiciones
+                    siguiente->tiempo = actual->tiempo;
+                    actual->tiempo = t;          
+               }
+               //sino sigue buscando
+               siguiente = siguiente->sgte;                    
+          }    
+          //si no hay nada
+          actual = actual->sgte;
+          siguiente = actual->sgte;
+           
+     }
+     
+     cout<<"\n\n\tLista ordenada..."<<endl;
+}
+
+
+void menu()
+{
+    cout<<"\n\t\tREGISTRO DE TIEMPOS DE CARRERAS DE CORREDORES\n\n";
+    cout<<" 1. REGISTRAR CORREDOR                  "<<endl;
+    cout<<" 2. MOSTRAR CORREDORES                   "<<endl;
+    cout<<" 3. ORDENAR CORREDORES POR TIEMPO DE LLEGADA"<<endl;
+    cout<<" 4. SALIR                            "<<endl;
+
+    cout<<"\n INGRESE OPCION: ";
+}
+
+
+
+
+int main()
+{
+     //punteros declarados en el struct
+    inicio = NULL;
+    fin    = NULL;
+    
+    int op;     // opcion del menu
+    int num;   // elemenento a ingresar
+
+
+    do
+    {
+        menu();  cin>> op;
+
+        switch(op)
+        {      
+            case 1:
+                 //se pasa los punteros ala funcion
+                 registrarCorredor( inicio, fin );
+            break;
+
+
+            case 2:
+                 cout<<"\n\n LISTA:\n\n";
+                 //se pasa los punteros ala funcion
+                 mostrarLista( inicio );
+            break;
+            
+            
+            case 3:
+                //se pasa los punteros ala funcion
+                 ordenarLista( inicio );
+            break;            
+
+        }
+
+        cout<<endl<<endl;
+        system("pause");  system("cls");
+
+    }while(op!=4);
+
+
+   system("pause");
+   
+   return 0;
+}
