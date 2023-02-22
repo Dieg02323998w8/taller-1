@@ -119,6 +119,18 @@ void ordenarLista(Tlista lista)
      cout<<"\n\n\tLista ordenada..."<<endl;
 }
 
+void promedioTiempo(Tlista inicio){
+	int promedio = 0, tamano = 0, suma = 0;
+	
+	while(inicio != NULL){
+		suma += inicio->tiempo;
+		tamano += (sizeof(inicio->tiempo))/8;
+		inicio = inicio->sgte;	
+	}
+	promedio = suma/tamano;
+	
+	cout<<"El promedio de tiempo en segundos es de: "<<promedio<<" Sg"<<endl;
+}
 
 void menu()
 {
@@ -126,7 +138,8 @@ void menu()
     cout<<" 1. REGISTRAR CORREDOR                  "<<endl;
     cout<<" 2. MOSTRAR CORREDORES                   "<<endl;
     cout<<" 3. ORDENAR CORREDORES POR TIEMPO DE LLEGADA"<<endl;
-    cout<<" 4. SALIR                            "<<endl;
+    cout<<" 4. PROMEDIO DE TIEMPPO                  "<<endl;
+    cout<<" 5. SALIR                            "<<endl;
 
     cout<<"\n INGRESE OPCION: ";
 }
