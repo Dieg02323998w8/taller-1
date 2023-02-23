@@ -9,8 +9,9 @@ Realice un programa que permita registrar el tiempo de carrera de los corredores
 
 --------------------------------
 integrantes del grupo:
+
 jonathan javier lozano patiño
-Diego Alberto Escobar
+Diego Albertoo Escobar
 
 */
 
@@ -23,9 +24,9 @@ using namespace std;
 
 //se crea el nodo
 struct nodo{
-     double tiempo;
-	char nombre[30];        
-     struct nodo *sgte;
+    double tiempo;
+	string nombre;        
+    struct nodo *sgte;
 };
 
 //se crea la variable que guardara la info de los nodos
@@ -132,6 +133,26 @@ void promedioTiempo(Tlista inicio){
 	cout<<"El promedio de tiempo en segundos es de: "<<promedio<<" Sg"<<endl;
 }
 
+void Mediana(Tlista inicio){
+	int tamano = 0, valor = 0, contador = 0;
+	float mediana = 0.0;
+	string nom;
+	
+	while(inicio != NULL){
+		tamano += (sizeof(inicio->tiempo))/8;
+		inicio = inicio->sgte;	
+	}
+	
+	if (tamano%2==0){
+		mediana = ((tamano/2)+((tamano/2)+1))/2;
+		cout<<"La primera posicion de la mediana es de: "<<mediana<<endl;
+		cout<<"La segunda posicion de la mediana es de: "<<mediana+1<<endl;
+	}else{
+		mediana = (tamano+1)/2;
+		cout<<"La posicion de la mediana es de: "<<mediana;
+	}
+}
+
 void menu()
 {
     cout<<"\n\t\tREGISTRO DE TIEMPOS DE CARRERAS DE CORREDORES\n\n";
@@ -139,7 +160,8 @@ void menu()
     cout<<" 2. MOSTRAR CORREDORES                   "<<endl;
     cout<<" 3. ORDENAR CORREDORES POR TIEMPO DE LLEGADA"<<endl;
     cout<<" 4. PROMEDIO DE TIEMPPO                  "<<endl;
-    cout<<" 5. SALIR                            "<<endl;
+    cout<<" 5. MEDIANA                              "<<endl;
+    cout<<" 6. SALIR                            "<<endl;
 
     cout<<"\n INGRESE OPCION: ";
 }
@@ -185,12 +207,20 @@ int main()
 			case 4:
 				promedioTiempo( inicio );           
 			break;
+			
+			
+			case 5:
+				Mediana( inicio );
+			break;
+			
+			
+			default: cout<<"Error de Opcion"<<endl;
         }
-
+		
         cout<<endl<<endl;
         system("pause");  system("cls");
 
-    }while(op!=5);
+    }while(op!=6);
 
 
    system("pause");
