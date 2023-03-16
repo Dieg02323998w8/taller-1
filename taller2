@@ -1,0 +1,250 @@
+/*
+Se necesita construir una aplicación que permita gestionar los datos de una prueba de atletismo.
+
+De cada atleta se requiere el nombre y el numero asignado.
+
+La prueba consiste en que cada atleta realiza una vuelta en el circuito y se toma su tiempo. Este tiempo deberá registrarse en un arreglo tipo FIFO. Donde se registre el tiempo de cada corredor que toma cada ronda de la prueba. En este arreglo se mantienen los datos de la ultima prueba.
+
+
+
+En un arreglo tipo LIFO se deben ir organizando los datos del menor al mayor en cuanto al promedio. Solamente se pueden ingresar al arreglo LIFO si se cuenta con dos rondas.
+
+
+
+Implementar la solicitud de datos del atleta. (20 Puntos)
+Implementar el registro de tiempo en FIFO. (30 Puntos)
+Implementar el calculo de promedios en LIFO. (20 Puntos)
+Gestionar adecuadamente el ordenamiento de LIFO sin romper la lógica del movimientos. (30 Puntos)
+
+
+
+Se entrega el link de Github donde este el codigo
+
+--------------------------------
+integrantes del grupo:
+
+jonathan javier lozano patiño
+Diego Albertoo Escobar
+
+
+*/
+
+#include <iostream>
+#include <conio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+using namespace std;
+
+struct fifo_ida{
+    int tiempo_ida;
+	string nombre_ida;       
+    struct fifo_ida *sgte;
+};
+
+typedef struct fifo_ida *Tlista_ida;
+
+Tlista_ida inicio_ida, fin_ida;
+/////////////////////////////////////////////////////////////
+struct fifo_vuelta{
+    int tiempo_vuelta;
+	string nombre_vuelta;       
+    struct fifo_vuelta *sgte;
+};
+
+typedef struct fifo_vuelta *Tlista_vuelta;
+
+Tlista_vuelta inicio_vuelta, fin_vuelta;
+
+struct lifo
+{
+	string nombre;
+	int tiempo_promedio;
+	lifo *a;
+}*c,*e;
+
+void ingresar_ida(Tlista_ida &inicio_ida, Tlista_ida &fin_ida)
+{
+ 	int contador = 1;
+	
+    Tlista_ida q;
+     
+    for(int i=0; i<contador; i++)
+    {
+        //crea un nuevo nodo
+        q = new(struct fifo_ida);
+        cout<<"Ingrese el nombre del corredor: \n";
+        cin>>q->nombre_ida;
+        cout<<"Ingrese el tiempo: \n";
+        cin>>q->tiempo_ida;
+		 
+        //si el primer puntero esta vacio
+        //se le da el dato como la cabeza
+        if(inicio_ida==NULL)
+        {
+            q->sgte = inicio_ida;
+            inicio_ida  = q;
+            fin_ida  = q;          
+        }
+        else
+        {
+            q->sgte = fin_ida->sgte;
+            fin_ida->sgte = q;
+            fin_ida = q;
+        }
+        
+        cout<<"\n\n\tcorredor registrado con exito......"<<endl;
+    }
+}
+
+void ingresar_vuelta(Tlista_vuelta &inicio_vuelta, Tlista_vuelta &fin_vuelta, Tlista_ida &inicio_ida)
+{
+ 	int contador = 1, tamano = 0;
+	
+    Tlista_vuelta q;
+     
+    string n;
+	
+    for(int i=0; i< contador; i++)
+    {
+        //crea un nuevo nodo
+        q = new(struct fifo_vuelta);
+        cout<<"Ingrese el nombre del corredor: \n";
+        cin>>n;
+        while(inicio_ida != NULL){
+        	if (n == inicio_ida->nombre_ida){
+        		q->nombre_vuelta = inicio_ida->nombre_ida;
+        		cout<<"Ingrese el tiempo: \n";
+        		cin>>q->tiempo_vuelta;
+		 
+        		//si el primer puntero esta vacio
+        		//se le da el dato como la cabeza
+        		if(inicio_vuelta==NULL)
+        		{
+            		q->sgte = inicio_vuelta;
+            		inicio_vuelta  = q;
+            		fin_vuelta = q;          
+        		}
+    			else
+				{
+            		q->sgte = fin_vuelta->sgte;
+            		fin_vuelta->sgte = q;
+            		fin_vuelta = q;
+        		}
+        		
+        		cout<<"\n\n\tcorredor registrado con exito......"<<endl;
+        		break;
+			}
+			inicio_vuelta = inicio_vuelta->sgte;
+		}
+    }
+}
+
+void mostrarLista_ida(Tlista_ida inicio_ida)
+{
+    //mientras que sea diferente a nulo se mostrara la info de los corredores
+    while(inicio_ida != NULL)
+    {
+        cout <<inicio_ida->nombre_ida<<"  " << inicio_ida->tiempo_ida<<" Sg\n";
+        inicio_ida = inicio_ida->sgte;
+    }
+}
+
+void mostrarLista_vuelta(Tlista_vuelta inicio_vuelta)
+{
+    //mientras que sea diferente a nulo se mostrara la info de los corredores
+    while(inicio_vuelta != NULL)
+    {
+        cout <<inicio_vuelta->nombre_vuelta<<"  " << inicio_vuelta->tiempo_vuelta<<" Sg\n";
+        inicio_vuelta = inicio_vuelta->sgte;
+    }
+}
+
+void promedio_lifo(Tlista_ida inicio_ida, Tlista_vuelta inicio_vuelta)
+{
+	int suma = 0, tamano = 0, promedio = 0;
+	string n;
+	
+	while (inicio_vuelta != NULL){
+		
+		cout<<inicio_vuelta->nombre_vuelta<<" - "<<inicio_ida->tiempo_ida<<" - "<<inicio_vuelta->tiempo_vuelta<<"\n";
+		promedio = (inicio_ida->tiempo_ida + inicio_vuelta->tiempo_vuelta)/ 2;
+		cout<<promedio<<"\n\n";
+		inicio_vuelta = inicio_vuelta->sgte;
+	}
+}
+
+void actualizar_pila()
+{	
+	int y=2,i,ca=0;
+ 	e=c;
+ 	while(e){
+ 		ca++;
+ 		e=e->a;
+ 	}
+
+	for(i=0;i<=ca;i++){
+ 		cout<<" ";
+ 	}
+ 	//muestro lo que tiene la pila!!
+ 	i=0;
+ 	e=c;
+ 	while(e){
+ 		cout<<"\n";
+ 		cout<<++i<<" - "<<e->nombre<<" - "<<e->tiempo_promedio;
+ 		e=e->a;
+ 	}
+}
+
+void menu()
+{
+	int y,opc;
+ 	for(;;){
+ 		cout<<"\n1. Ingresar datos de ida";
+ 		cout<<"\n2. Mostrar datos de ida";
+ 		cout<<"\n3. Ingresar datos de vuelta";
+ 		cout<<"\n4. Mostrar datos de vuelta";
+ 		cout<<"\n5. Calcular promedios";
+ 		cout<<"\n6. Mostrar promedios";
+ 		cout<<"\n0. Terminar";
+ 		cout<<"\n\nIngrese opcion: ";cin>>opc;
+ 		switch(opc){
+ 			case 1:
+ 				ingresar_ida(inicio_ida, fin_ida);
+ 			break;
+ 		
+ 			case 2: 
+				mostrarLista_ida(inicio_ida);
+ 			break;
+ 			
+ 			case 3:
+ 				ingresar_vuelta(inicio_vuelta, fin_vuelta, inicio_ida);
+ 			break;	
+ 			
+ 			case 4: 
+				mostrarLista_vuelta(inicio_vuelta);
+ 			break;
+ 			
+ 			case 5:
+ 				promedio_lifo(inicio_ida, inicio_vuelta);
+ 			break;	
+ 			
+ 			case 6:
+ 				actualizar_pila();
+ 			break;
+ 			
+ 			case 0: 
+		 		exit(1);
+ 			default: cout<<"\n Opcion no valida!!"; break;
+		}
+		
+		cout<<"\n\nOprima una tecla para continuar";
+		getch();
+ 	}
+}
+
+int main()
+{
+	menu();
+}
