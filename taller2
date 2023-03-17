@@ -171,6 +171,9 @@ void menu()
  			
  			case 3:
  				promedio_lifo(inicio);
+ 				
+ 				cout<<"----------------------------------";
+ 				
  				actualizar_pila();
  			break;	
  			
