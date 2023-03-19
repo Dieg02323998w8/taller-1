@@ -24,7 +24,7 @@ Se entrega el link de Github donde este el codigo
 integrantes del grupo:
 
 jonathan javier lozano patiño
-Diego Alberto Escobar
+Diego Albertoo Escobar
 
 
 */
@@ -37,95 +37,140 @@ Diego Alberto Escobar
 
 using namespace std;
 
-struct fifo{
+struct fifo_ida{
     int tiempo_ida;
-    int tiempo_vuelta;
-	string nombre;       
-    struct fifo *sgte;
+	string nombre_ida;       
+    struct fifo_ida *sgte;
 };
 
-typedef struct fifo *Tlista;
+typedef struct fifo_ida *Tlista_ida;
 
-Tlista inicio, fin;
-/////////////////////////////////////////////////
+Tlista_ida inicio_ida, fin_ida;
+/////////////////////////////////////////////////////////////
+struct fifo_vuelta{
+    int tiempo_vuelta;
+	string nombre_vuelta;       
+    struct fifo_vuelta *sgte;
+};
+
+typedef struct fifo_vuelta *Tlista_vuelta;
+
+Tlista_vuelta inicio_vuelta, fin_vuelta;
+///////////////////////////////////////////////////////////////
 struct lifo
 {
 	string nombre;
 	int tiempo_promedio;
 	lifo *a;
 }*c,*e;
-
-void ingresar(Tlista &inicio, Tlista &fin)
+//////////////////////////////////////////////////////////////////
+void ingresar_ida(Tlista_ida &inicio_ida, Tlista_ida &fin_ida, Tlista_vuelta &inicio_vuelta)
 {
- 	int contador = 1;
-	
-    Tlista q;
-     
+ 	int contador = 1, tamano = 0;
+
+    Tlista_ida q;
+
+    string n;
+
+    for(int i=0; i< contador; i++)
+    {
+        //crea un nuevo nodo
+        q = new(struct fifo_ida);
+        cout<<"Ingrese el nombre del corredor: \n";
+        cin>>n;
+        while(inicio_vuelta != NULL){
+        	if (n == inicio_vuelta->nombre_vuelta){
+        		q->nombre_ida = inicio_vuelta->nombre_vuelta;
+        		cout<<"Ingrese el tiempo: \n";
+        		cin>>q->tiempo_ida;
+
+        		//si el primer puntero esta vacio
+        		//se le da el dato como la cabeza
+        		if(inicio_ida==NULL)
+        		{
+            		q->sgte = inicio_ida;
+            		inicio_ida  = q;
+            		fin_ida = q;          
+        		}
+    			else
+				{
+            		q->sgte = fin_ida->sgte;
+            		fin_ida->sgte = q;
+            		fin_ida = q;
+        		}
+
+        		cout<<"\n\n\tcorredor registrado con exito......"<<endl;
+        		break;
+			}
+			inicio_vuelta = inicio_vuelta->sgte;
+		}
+    }
+}
+
+void ingresar_vuelta(Tlista_vuelta &inicio_vuelta, Tlista_vuelta &fin_vuelta)
+{
+	int contador = 1;
+
+    Tlista_vuelta q;
+
     for(int i=0; i<contador; i++)
     {
         //crea un nuevo nodo
-        q = new(struct fifo);
+        q = new(struct fifo_vuelta);
         cout<<"Ingrese el nombre del corredor: \n";
-        cin>>q->nombre;
-        cout<<"Ingrese el tiempo ida: \n";
-        cin>>q->tiempo_ida;
-        cout<<"Ingrese el tiempo vuelta: \n";
+        cin>>q->nombre_vuelta;
+        cout<<"Ingrese el tiempo: \n";
         cin>>q->tiempo_vuelta;
-		 
+
         //si el primer puntero esta vacio
         //se le da el dato como la cabeza
-        if(inicio==NULL)
+        if(inicio_vuelta==NULL)
         {
-            q->sgte = inicio;
-            inicio  = q;
-            fin  = q;          
+            q->sgte = inicio_vuelta;
+            inicio_vuelta  = q;
+            fin_vuelta  = q;          
         }
         else
         {
-            q->sgte = fin->sgte;
-            fin->sgte = q;
-            fin = q;
+            q->sgte = fin_vuelta->sgte;
+            fin_vuelta->sgte = q;
+            fin_vuelta = q;
         }
-        
+
         cout<<"\n\n\tcorredor registrado con exito......"<<endl;
     }
 }
 
-void mostrarLista(Tlista inicio)
+void mostrarLista_ida(Tlista_ida inicio_ida)
 {
     //mientras que sea diferente a nulo se mostrara la info de los corredores
-    while(inicio != NULL)
+    while(inicio_ida != NULL)
     {
-        cout <<inicio->nombre<<" ida:" << inicio->tiempo_ida<<" Sg "<<" vuelta:" << inicio->tiempo_vuelta<<" Sg\n";
-        inicio = inicio->sgte;
+        cout <<inicio_ida->nombre_ida<<"  " << inicio_ida->tiempo_ida<<" Sg\n";
+        inicio_ida = inicio_ida->sgte;
     }
 }
 
-void promedio_lifo(Tlista inicio)
+void mostrarLista_vuelta(Tlista_vuelta inicio_vuelta)
 {
-	int suma = 0, promedio = 0;
-	
-	while (inicio != NULL){
-		
-		promedio = (inicio->tiempo_ida + inicio->tiempo_vuelta)/ 2;
-		cout<<inicio->nombre<<" ida "<<inicio->tiempo_ida<<" vuelta "<<inicio->tiempo_vuelta<<" promedio "<<promedio<<"\n";
-		
-		if(c == NULL)
-		{
-			c=new(lifo);
-			c->nombre = inicio->nombre;
-			c->tiempo_promedio = promedio;
-		}else{
-			e=new(lifo);
-			
-			e->nombre = inicio->nombre;
-			e->tiempo_promedio = promedio;
-			
-			e->a = c;
-			c = e;
-		}
-		
-		inicio = inicio->sgte;
+    //mientras que sea diferente a nulo se mostrara la info de los corredores
+    while(inicio_vuelta != NULL)
+    {
+        cout <<inicio_vuelta->nombre_vuelta<<"  " << inicio_vuelta->tiempo_vuelta<<" Sg\n";
+        inicio_vuelta = inicio_vuelta->sgte;
+    }
+}
+
+void promedio_lifo(Tlista_ida inicio_ida, Tlista_vuelta inicio_vuelta)
+{
+	int suma = 0, tamano = 0, promedio = 0;
+	string n;
+
+	while (inicio_vuelta != NULL){
+		cout<<inicio_vuelta->nombre_vuelta<<" - "<<inicio_ida->tiempo_ida<<" - "<<inicio_vuelta->tiempo_vuelta<<"\n";
+		promedio = (inicio_ida->tiempo_ida + inicio_vuelta->tiempo_vuelta)/ 2;
+		cout<<promedio<<"\n\n";
+		inicio_vuelta = inicio_vuelta->sgte;
 	}
 }
 
@@ -155,33 +200,45 @@ void menu()
 {
 	int y,opc;
  	for(;;){
+ 		system("cls");
  		cout<<"\n1. Ingresar datos de ida";
  		cout<<"\n2. Mostrar datos de ida";
- 		cout<<"\n3. Mostrar promedios";
+ 		cout<<"\n3. Ingresar datos de vuelta";
+ 		cout<<"\n4. Mostrar datos de vuelta";
+ 		cout<<"\n5. Calcular promedios";
+ 		cout<<"\n6. Mostrar promedios";
  		cout<<"\n0. Terminar";
  		cout<<"\n\nIngrese opcion: ";cin>>opc;
  		switch(opc){
  			case 1:
- 				ingresar(inicio, fin);
+ 				ingresar_ida(inicio_ida, fin_ida, inicio_vuelta);
  			break;
- 		
+
  			case 2: 
-				mostrarLista(inicio);
+				mostrarLista_ida(inicio_ida);
  			break;
- 			
+
  			case 3:
- 				promedio_lifo(inicio);
- 				
- 				cout<<"----------------------------------";
- 				
- 				actualizar_pila();
+ 				ingresar_vuelta(inicio_vuelta, fin_vuelta);
  			break;	
- 			
+
+ 			case 4: 
+				mostrarLista_vuelta(inicio_vuelta);
+ 			break;
+
+ 			case 5:
+ 				promedio_lifo(inicio_ida, inicio_vuelta);
+ 			break;	
+
+ 			case 6:
+ 				actualizar_pila();
+ 			break;
+
  			case 0: 
 		 		exit(1);
  			default: cout<<"\n Opcion no valida!!"; break;
 		}
-		
+
 		cout<<"\n\nOprima una tecla para continuar";
 		getch();
  	}
