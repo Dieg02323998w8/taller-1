@@ -166,17 +166,34 @@ void promedio_lifo(Tlista_ida inicio_ida, Tlista_vuelta inicio_vuelta)
 	int suma = 0, tamano = 0, promedio = 0;
 	string n;
 
-	while (inicio_vuelta != NULL){
-		cout<<inicio_vuelta->nombre_vuelta<<" - "<<inicio_ida->tiempo_ida<<" - "<<inicio_vuelta->tiempo_vuelta<<"\n";
+	while (inicio_ida != NULL){
+		cout<<inicio_ida->nombre_ida<<" - "<<inicio_ida->tiempo_ida<<" - "<<inicio_vuelta->tiempo_vuelta<<"\n";
 		promedio = (inicio_ida->tiempo_ida + inicio_vuelta->tiempo_vuelta)/ 2;
 		cout<<promedio<<"\n\n";
-		inicio_vuelta = inicio_vuelta->sgte;
+	
+		if(c == NULL)
+		{
+			c=new(lifo);
+			c->nombre = inicio_ida->nombre_ida;
+			c->tiempo_promedio = promedio;
+			c->a=NULL;
+			return;
+		}else{
+			e=new(lifo);
+ 			e->nombre = inicio_ida->nombre_ida;
+			e->tiempo_promedio = promedio;
+ 			e->a=c;
+ 			c=e;
+		}
+			
+		inicio_ida = inicio_ida->sgte;
 	}
 }
 
 void actualizar_pila()
 {	
 	int y=2,i,ca=0;
+	
  	e=c;
  	while(e){
  		ca++;
