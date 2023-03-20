@@ -146,7 +146,7 @@ void mostrarLista_ida(Tlista_ida inicio_ida)
     //mientras que sea diferente a nulo se mostrara la info de los corredores
     while(inicio_ida != NULL)
     {
-        cout <<inicio_ida->nombre_ida<<"  " << inicio_ida->tiempo_ida<<" Sg\n";
+        cout <<inicio_ida->nombre_ida<<"  " << inicio_ida->tiempo_ida<<"/sg\n";
         inicio_ida = inicio_ida->sgte;
     }
 }
@@ -156,7 +156,7 @@ void mostrarLista_vuelta(Tlista_vuelta inicio_vuelta)
     //mientras que sea diferente a nulo se mostrara la info de los corredores
     while(inicio_vuelta != NULL)
     {
-        cout <<inicio_vuelta->nombre_vuelta<<"  " << inicio_vuelta->tiempo_vuelta<<" Sg\n";
+        cout <<inicio_vuelta->nombre_vuelta<<"  " << inicio_vuelta->tiempo_vuelta<<"/sg\n";
         inicio_vuelta = inicio_vuelta->sgte;
     }
 }
@@ -167,9 +167,9 @@ void promedio_lifo(Tlista_ida inicio_ida, Tlista_vuelta inicio_vuelta)
 	string n;
 
 	while (inicio_ida != NULL){
-		cout<<inicio_ida->nombre_ida<<" - "<<inicio_ida->tiempo_ida<<" - "<<inicio_vuelta->tiempo_vuelta<<"\n";
+		cout<<inicio_ida->nombre_ida<<" ida - "<<inicio_ida->tiempo_ida<<"/sg vuelta - "<<inicio_vuelta->tiempo_vuelta<<"/sg promedio - ";
 		promedio = (inicio_ida->tiempo_ida + inicio_vuelta->tiempo_vuelta)/ 2;
-		cout<<promedio<<"\n\n";
+		cout<<promedio<<"/sg\n\n";
 	
 		if(c == NULL)
 		{
@@ -223,7 +223,7 @@ void menu()
  		cout<<"\n3. Ingresar datos de vuelta";
  		cout<<"\n4. Mostrar datos de vuelta";
  		cout<<"\n5. Calcular promedios";
- 		cout<<"\n6. Mostrar promedios";
+ 		cout<<"\n6. Mostrar promedios LIFO";
  		cout<<"\n0. Terminar";
  		cout<<"\n\nIngrese opcion: ";cin>>opc;
  		switch(opc){
