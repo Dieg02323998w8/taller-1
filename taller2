@@ -24,7 +24,7 @@ Se entrega el link de Github donde este el codigo
 integrantes del grupo:
 
 jonathan javier lozano patiño
-Diego Albertoo Escobar
+Diego Alberto Escobar
 
 
 */
@@ -64,12 +64,14 @@ struct lifo
 	lifo *a;
 }*c,*e;
 //////////////////////////////////////////////////////////////////
-void ingresar_ida(Tlista_ida &inicio_ida, Tlista_ida &fin_ida, Tlista_vuelta &inicio_vuelta)
+void ingresar_ida()
 {
  	int contador = 1, tamano = 0;
 
     Tlista_ida q;
-
+    Tlista_vuelta x;
+	x = inicio_vuelta;
+	
     string n;
 
     for(int i=0; i< contador; i++)
@@ -78,9 +80,9 @@ void ingresar_ida(Tlista_ida &inicio_ida, Tlista_ida &fin_ida, Tlista_vuelta &in
         q = new(struct fifo_ida);
         cout<<"Ingrese el nombre del corredor: \n";
         cin>>n;
-        while(inicio_vuelta != NULL){
-        	if (n == inicio_vuelta->nombre_vuelta){
-        		q->nombre_ida = inicio_vuelta->nombre_vuelta;
+        while(x != NULL){
+        	if (n == x->nombre_vuelta){
+        		q->nombre_ida = x->nombre_vuelta;
         		cout<<"Ingrese el tiempo: \n";
         		cin>>q->tiempo_ida;
 
@@ -102,7 +104,7 @@ void ingresar_ida(Tlista_ida &inicio_ida, Tlista_ida &fin_ida, Tlista_vuelta &in
         		cout<<"\n\n\tcorredor registrado con exito......"<<endl;
         		break;
 			}
-			inicio_vuelta = inicio_vuelta->sgte;
+			x = x->sgte;
 		}
     }
 }
@@ -161,32 +163,40 @@ void mostrarLista_vuelta(Tlista_vuelta inicio_vuelta)
     }
 }
 
-void promedio_lifo(Tlista_ida inicio_ida, Tlista_vuelta inicio_vuelta)
+void promedio_lifo()
 {
+	Tlista_ida p;
+	p = inicio_ida;
+	
+	Tlista_vuelta o;
+	o = inicio_vuelta;
+	
 	int suma = 0, tamano = 0, promedio = 0;
 	string n;
 
-	while (inicio_ida != NULL){
-		cout<<inicio_ida->nombre_ida<<" ida - "<<inicio_ida->tiempo_ida<<"/sg vuelta - "<<inicio_vuelta->tiempo_vuelta<<"/sg promedio - ";
-		promedio = (inicio_ida->tiempo_ida + inicio_vuelta->tiempo_vuelta)/ 2;
-		cout<<promedio<<"/sg\n\n";
+	while (o != NULL){
+		if (p->nombre_ida == o->nombre_vuelta){
+			cout<<p->nombre_ida<<" ida - "<<p->tiempo_ida<<"/sg vuelta - "<<o->tiempo_vuelta<<"/sg promedio - ";
+			promedio = (p->tiempo_ida + o->tiempo_vuelta)/ 2;
+			cout<<promedio<<"/sg\n\n";
 	
-		if(c == NULL)
-		{
-			c=new(lifo);
-			c->nombre = inicio_ida->nombre_ida;
-			c->tiempo_promedio = promedio;
-			c->a=NULL;
-			return;
-		}else{
-			e=new(lifo);
- 			e->nombre = inicio_ida->nombre_ida;
-			e->tiempo_promedio = promedio;
- 			e->a=c;
- 			c=e;
+			if(c->nombre != p->nombre_ida){
+				if(c == NULL)
+				{
+					c=new(lifo);
+					c->nombre = p->nombre_ida;
+					c->tiempo_promedio = promedio;
+					c->a=NULL;
+				}else{
+					e=new(lifo);
+ 					e->nombre = p->nombre_ida;
+					e->tiempo_promedio = promedio;
+ 					e->a=c;
+ 					c=e;
+				}
+			}
 		}
-			
-		inicio_ida = inicio_ida->sgte;
+		o = o->sgte;
 	}
 }
 
@@ -208,7 +218,7 @@ void actualizar_pila()
  	e=c;
  	while(e){
  		cout<<"\n";
- 		cout<<++i<<" - "<<e->nombre<<" - "<<e->tiempo_promedio;
+ 		cout<<++i<<" - "<<e->nombre<<" - "<<e->tiempo_promedio<<"/sg ";
  		e=e->a;
  	}
 }
@@ -228,7 +238,7 @@ void menu()
  		cout<<"\n\nIngrese opcion: ";cin>>opc;
  		switch(opc){
  			case 1:
- 				ingresar_ida(inicio_ida, fin_ida, inicio_vuelta);
+ 				ingresar_ida();
  			break;
 
  			case 2: 
@@ -244,7 +254,7 @@ void menu()
  			break;
 
  			case 5:
- 				promedio_lifo(inicio_ida, inicio_vuelta);
+ 				promedio_lifo();
  			break;	
 
  			case 6:
