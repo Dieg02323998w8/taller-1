@@ -1,0 +1,107 @@
+#include<iostream>
+using namespace std;
+
+// Definimos la estructura de cada nodo del Ã¡rbol
+struct Nodo {
+    int year;
+    float copago;
+    Nodo* izq;
+    Nodo* der;
+};
+
+// FunciÃ³n para crear un nuevo nodo
+Nodo* crearNodo(int year, float copago) {
+    Nodo* nodo = new Nodo;
+    nodo->year = year;
+    nodo->copago = copago;
+    nodo->izq = nodo->der = nullptr;
+    return nodo;
+}
+
+// FunciÃ³n para insertar un nodo en el Ã¡rbol
+void insertarNodo(Nodo*& raiz, int year, float copago) {
+    if (raiz == nullptr) {
+        raiz = crearNodo(year, copago);
+    } else if (year < raiz->year) {
+        insertarNodo(raiz->izq, year, copago);
+    } else if (year > raiz->year) {
+        insertarNodo(raiz->der, year, copago);
+    } else {
+        // Si ya existe un nodo con el mismo aÃ±o, se promedia el copago
+        raiz->copago = (raiz->copago + copago) / 2.0;
+    }
+}
+
+// FunciÃ³n para calcular el promedio de copagos de un subÃ¡rbol
+float promedioCopagos(Nodo* raiz) {
+    if (raiz == nullptr) {
+        return 0;
+    } else {
+        float sum = raiz->copago;
+        sum += promedioCopagos(raiz->izq);
+        sum += promedioCopagos(raiz->der);
+        return sum;
+    }
+}
+
+// FunciÃ³n para contar el nÃºmero de nodos de un subÃ¡rbol
+int contarNodos(Nodo* raiz) {
+    if (raiz == nullptr) {
+        return 0;
+    } else {
+        return 1 + contarNodos(raiz->izq) + contarNodos(raiz->der);
+    }
+}
+
+// FunciÃ³n para calcular el promedio de copagos por aÃ±o de nacimiento
+void promedioCopagosPorAnio(Nodo* raiz) {
+    if (raiz != nullptr) {
+        promedioCopagosPorAnio(raiz->izq);
+        float promedio = promedioCopagos(raiz) / contarNodos(raiz);
+        cout << "Promedio de copagos para el aÃ±o " << raiz->year << ": $" << promedio << endl;
+        promedioCopagosPorAnio(raiz->der);
+    }
+}
+
+// FunciÃ³n principal
+int main() {
+    Nodo* raiz = nullptr;
+    int opcion = 0,anio = 0;
+    float copago = 0;
+    // Insertamos algunos pacientes con su copago correspondiente
+
+    do{
+        cout<<"Menu \n";
+        cout<<"1. Ingresar paciente \n";
+        cout<<"2. Mostrar promedio de copago por anio \n";
+        cout<<"3. salir \n";
+        cin>>opcion;
+
+        switch(opcion){
+
+            case 1: 
+            cout<<"Ingrese anio de nacimiento: \n";
+            cin>> anio;
+            cout<<"Ingrese el copago (cantidad): \n";
+            cin>> copago;
+            insertarNodo(raiz, anio, copago);
+            break;
+
+            case 2:
+                promedioCopagosPorAnio(raiz);
+                cout<<"presione una tecla";
+                system("pause");
+                break;
+            case 3:
+                exit(0);
+
+
+        }
+
+
+    }while ( opcion != 3);
+
+    
+
+    return 0 ;
+}
